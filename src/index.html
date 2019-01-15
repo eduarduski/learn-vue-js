@@ -1,0 +1,107 @@
+<!--
+    from jb:    Open VSCode and type ctrl+P, type "ext install ritwickdey.liveserver"
+    then:       Open a HTML file and right-click on the editor and click on Open with Live Server
+    note:       since this is the 2nd "live server" project I have ran I had to change the port by:
+                file -> preferences -> settings then navigating to Live Server then adding "liveServer.settings.port": 5510
+                under "User Settings" (json file)
+    https://scrimba.com/p/pZ45Hz/cyLQNAM
+-->
+
+<!-- ep - next line communicates that we are using html5 -->
+<!DOCTYPE html>
+<html>
+	<head>
+        <!-- ep - "UTF-8" is for emojis -->
+        <meta charset="UTF-8">
+        <!-- ep - "viewport" is for dealing with mobile devises -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/jgthms/minireset.css/master/minireset.css">
+        <!-- ep - custom debugger css will help you immensely with your development.. it works by changing the color of any element
+            you add the keyword "debug" to (i.e. "<body debug>")) -->
+		<link rel="stylesheet" href="css/debug.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,900">
+        <!-- ep - next line imports vue.. -->
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+        <style>
+            /* resets */
+            * { color: inherit; }
+            input { font: inherit; border: unset; background: unset; }
+            input:focus { outline: unset; }
+
+            :root {
+                font: 1rem/1.175 "BlinkMacSystemFont", -apple-system, "Roboto", sans-seri;
+            }
+
+            #app {
+                display: flex;
+                flex-direction: column; justify-content: center; align-items: center;
+                width: 100vw; height: 100vh;
+                font-weight: 900; font-size: 8rem;
+                color: hsl(0, 0%, 100%);
+                background: hsl(240, 100%, 67%);
+            }
+
+            .smaller{
+                font-size: 4rem;
+            }
+
+            input { text-align: center; }
+
+            img {
+                width: 8rem; height: 8rem;
+                vertical-align: calc(-0.12109375em);
+            }
+		</style>
+	</head>
+
+    <!-- ep - this next section (inside the <body> tag) is what is considered the DOM (document object model) -->
+    <body>
+		<div id="app">
+            <p v-if=showme>{{ greetings }}</p>
+            <!-- ep - next line is equivalent to the 1st line (with the double "{}") -->
+            <p v-if=showme class="smaller" v-text = "greet2"></p>
+            <!-- ep - next line is how we interpolate html inside of a paragraph (or any element) -->
+            <p v-if=showme v-html = "greet3"></p>
+            <p v-html="lumos(wizard)"></p>
+		</div>
+
+		<script>
+            "use strict"
+
+            // emojify returns the corresponding emoji image (+ makes sure that the emojis look good on every browser..?)
+            function emojify(name) {
+                var pic = `<img src="emojis/` + name + `.png">`
+
+                return pic
+            }
+
+            // cast returns a spell (function) that decorates the wizard
+            function cast(emoji) {
+                if (!emoji) {
+                    emoji = "¯\\_(ツ)_/¯"
+                }
+                return function (wizard) {
+                    return emoji + wizard + emoji
+                }
+            }
+
+            var app = new Vue({
+                // ep - el stands for element
+                el: "#app",
+                data: {
+                    greetings: "hello, world!",
+                    greet2: "starting point..",
+                    showme: false,
+                    // ep - next line calls the "emojify" function
+                    greet3: "Hello, World! " + emojify("celebration"),
+                    wizard: emojify("wizard")
+                },
+                methods: {
+                    lumos: cast(emojify("lumos"))
+                }
+            })
+		</script>
+
+	</body>
+</html>
